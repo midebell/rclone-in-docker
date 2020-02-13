@@ -8,12 +8,12 @@ ARG GIT_PROJECT_NAME="rclone-in-docker"
 ARG ALPINE_VERSION="3.10"
 ARG USER="onfire"
 #
-ARG DOCKERHUB_USER="devmtl"
-ARG GITHUB_USER="firepress"
-ARG GITHUB_ORG="firepress-org"
+ARG DOCKERHUB_USER="midebell"
+ARG GITHUB_USER="midebell"
+ARG GITHUB_ORG="midebell"
 ARG GITHUB_REGISTRY="registry"
 #
-ARG GIT_REPO_DOCKERFILE="https://github.com/firepress-org/rclone-in-docker"
+ARG GIT_REPO_DOCKERFILE="https://github.com/midebell/rclone-in-docker"
 ARG GIT_REPO_SOURCE="https://github.com/rclone/rclone"
 
 
