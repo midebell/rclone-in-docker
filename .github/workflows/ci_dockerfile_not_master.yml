@@ -60,10 +60,6 @@ jobs:
           # UAT is User Acceptance Testing
           echo "$(cat APP_NAME):uat" > TAG_UAT
           docker build --file $(cat DOCKERFILE_NAME) --tag $(cat TAG_UAT) .
-          # for Docker hub
-          docker build --file $(cat DOCKERFILE_NAME) --tag $(cat TAG_EDGE) .
-          docker build --file $(cat DOCKERFILE_NAME) --tag $(cat TAG_EDGE_VERSION) .
-          docker build --file $(cat DOCKERFILE_NAME) --tag $(cat TAG_EDGE_VERSION_HASH) .
           # for GPR
           docker build --file $(cat DOCKERFILE_NAME) --tag $(cat TAG_EDGE_GPR) .
           docker build --file $(cat DOCKERFILE_NAME) --tag $(cat TAG_EDGE_VERSION_GPR) .
@@ -108,18 +104,11 @@ jobs:
           docker info
           uname -a
 
-      - name: Publish to Dockerhub
-        run: |
-          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username $(cat DOCKERHUB_USER) --password-stdin
-          docker push $(cat TAG_EDGE)
-          docker push $(cat TAG_EDGE_VERSION)
-          docker push $(cat TAG_EDGE_VERSION_HASH)
-
       - name: Publish to GPR
         if: always()
         # As GPR is in beta, it sometimes does not work as expected
         run: |
-          echo ${{ secrets.TOKEN_GPR }} | docker login docker.pkg.github.com --username $(cat GITHUB_ORG) --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com --username $(cat GITHUB_ORG) --password-stdin
           docker push $(cat TAG_EDGE_GPR)
           docker push $(cat TAG_EDGE_VERSION_GPR)
           docker push $(cat TAG_EDGE_VERSION_HASH_GPR)
@@ -144,24 +133,3 @@ jobs:
           #echo "$(cat DOCKERHUB_USER)/$(cat APP_NAME)" > DKR_HUB_URL
           #echo "$(cat DKR_HUB_URL):latest" > TAG_LATEST
 
-      - name: Push README to dockerhub description
-        run: echo "We do this step under the master branch only."
-
-      - name: Notify on Slack
-        run: |
-          docker run --rm \
-            --name noti \
-            -e NOTI_MESSAGE="$(cat NOTI_MESSAGE)" \
-            -e SLACK_CHANNEL="github-actions" \
-            -e SLACK_TOKEN_CRON="${{ secrets.TOKEN_SLACK }}" \
-            $(cat IMG_NOTI) sh -c \
-              ' NOTI_SLACK_TOKEN="$SLACK_TOKEN_CRON" \
-                NOTI_SLACK_CHANNEL="$SLACK_CHANNEL" \
-                noti -k -m "$NOTI_MESSAGE" '
-
-      - name: Test image with Aquasec microscanner
-        run: echo "We do this step under the master branch only."
-
-      #- name: Github Actions ideas to implements
-      #  run: |
-      #    echo "see —> https://gist.github.com/pascalandy/4e499b7c42023836a7d207277923fc09"
