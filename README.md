@@ -26,7 +26,7 @@
 
 **rclone** in a docker container along a CI (continuous integration) to build the Docker image.
 
-## Features
+## Features 
 
 - an **everyday build** and on every commit (CI)
 - a build from the **sources** (CI)
