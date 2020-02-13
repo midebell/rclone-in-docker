@@ -11,7 +11,7 @@ ARG USER="onfire"
 ARG DOCKERHUB_USER="midebell"
 ARG GITHUB_USER="midebell"
 ARG GITHUB_ORG="midebell"
-ARG GITHUB_REGISTRY="registry"
+ARG GITHUB_REGISTRY="midebell"
 #
 ARG GIT_REPO_DOCKERFILE="https://github.com/midebell/rclone-in-docker"
 ARG GIT_REPO_SOURCE="https://github.com/rclone/rclone"
